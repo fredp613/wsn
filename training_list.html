@@ -1,0 +1,200 @@
+<style>
+
+.margin {
+margin-top: 50px;
+
+}
+
+
+</style>
+
+<div class="upcoming-events text-center margin">
+    <div class="container">
+        <div class="row text-left eventC">
+            <div class="col-lg-3">
+                <ul class="list-unstyled">
+                    <li><a href="/courses">ALL COURSES</a></li>
+                    <li><a href="/courses/schedule">TRAINING SCHEDULE</a></li>
+                    <li><a href="#">ONLINE TRAINING</a></li>
+                    <li><a href="#">JHSC CERTIFICATION</a></li>
+                    <li><a href="#">WORKING AT HEIGHTS</a></li>
+                    <li><a href="#">MANDATORY SKILLS TRAINING</a></li>
+                    <li><a href="#">TRAINING PARTNERS</a></li>
+                    <li><a href="#">APPROVED TRAINERS (FORESTRY)</a></li>
+                    <li><a href="#">MANDATORY AWARENESS TRAINING</a></li>
+                    <li><a href="#">REQUEST TRAINING RECORDS</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-9" style="padding-bottom:35px;">
+                <h2>Training (All Courses)</h2>
+                <div>Workplace Safety North’s complete course catalogue is stored in the database below. View training schedule. If you discover a course does not have any sessions listed, please contact customer care to open a session or initiate a waiting list for your chosen course. If interested in offering courses, please visit Training Partners webpage.</div>
+
+            </div>
+
+            <div class="col-lg-9">
+                    {% entitylist id:page.adx_entitylist.id %}
+                    
+                    <div class="container-fluid">
+                            <div class="row">
+                            {% entityview id:params.view, search:params.search, order:params.order, page:params.page, pagesize:params.pagesize, metafilter:params.mf %}
+                            {% assign order = params.order | default: entityview.sort_expression %}
+                            <table class="table" data-order="{{ order }}">
+                                <thead>
+                                <tr>
+                                    {% for c in entityview.columns -%}
+                                    <th width="{{ c.width }}" data-logicalname="{{ c.logical_name }}">
+                                        {% if c.sort_enabled %}
+                                        {% assign current_sort = order | current_sort:c.logical_name %}
+                                        {% case current_sort %}
+                                        {% when 'ASC' %}
+                                            <a href="{{ request.path_and_query | add_query:'order', c.sort_descending }}">
+                                            {{ c.name }} <i class="fa fa-sort-asc"></i>
+                                            </a>
+                                        {% when 'DESC' %}
+                                            <a href="{{ request.path_and_query | add_query:'order', c.sort_ascending }}">
+                                            {{ c.name }} <i class="fa fa-sort-desc"></i>
+                                            </a>
+                                        {% else %}
+                                            <a href="{{ request.path_and_query | add_query:'order', c.sort_ascending }}">
+                                            {{ c.name }} <i class="fa fa-unsorted"></i>
+                                            </a>
+                                        {% endcase %}
+                                        {% else %}
+                                        {{ c.name }}
+                                        {% endif %}
+                                    </th>
+                                    {% endfor -%}
+                                    <th width="1"></th>
+                                </tr>
+                                </thead>
+                        
+                                <tbody>
+                                {% for e in entityview.records -%}
+                                    <tr>
+                        
+                                    {% for c in entityview.columns -%}
+                                        {% assign attr = e[c.logical_name] %}
+                                        {% assign attr_type = c.attribute_type | downcase %}
+                        
+                                        <td data-logicalname="{{ c.logical_name }}">
+                                        {% if attr.is_entity_reference -%}
+                                            {{ attr.name }}
+                                        {% elsif attr_type == 'datetime' %}
+                                            {% if attr %}
+                                            <time datetime="{{ attr | date_to_iso8601 }}">
+                                                {{ attr }}
+                                            </time>
+                                            {% endif %}
+                                        {% elsif attr_type == 'picklist' %}
+                                            {{ attr.label }}
+                                        {% else %}
+                                            {{ attr }}
+                                        {% endif -%}
+                                        </th>
+                                    {% endfor -%}
+                        
+                                    <td>
+                                        {% if entitylist.detail_enabled -%}
+                                        <a class="btn btn-default btn-xs"
+                                            href="{{ entitylist.detail_url}}?{{ entitylist.detail_id_parameter }}={{ e.id }}"
+                                            title="{{ entitylist.detail_label }}">
+                                            <i class="fa fa-external-link"></i>
+                                        </a>
+                                        {% endif -%}
+                                    </td>
+                        
+                                    <tr>
+                                {% endfor -%}
+                                </tbody>
+                            </table>
+                            
+                            {% if entityview.pages.size > 0 %}
+                                {% assign first_page = entityview.first_page %}
+                                {% assign last_page = entityview.last_page %}
+                                {% assign page_offset = entityview.page | minus:1 | divided_by:10 | times:10 %}
+                                {% assign page_slice_first_page = page_offset | plus:1 %}
+                                {% assign page_slice_last_page = page_offset | plus:10 %}
+                        
+                                <ul class="pagination">
+                                <li {% unless first_page and entityview.page > 1 %}class="disabled"{% endunless %}>
+                                    <a
+                                    {% if first_page and entityview.page > 1 %}
+                                        href="{{ request.url | add_query:'page', first_page | path_and_query }}"
+                                    {% endif %}>
+                                    &laquo;
+                                    </a>
+                                </li>
+                        
+                                <li {% unless entityview.previous_page %}class="disabled"{% endunless %}>
+                                    <a
+                                    {% if entityview.previous_page %}
+                                        href="{{ request.url | add_query:'page', entityview.previous_page | path_and_query }}"
+                                    {% endif %}>
+                                    &lsaquo;
+                                    </a>
+                                </li>
+                        
+                                {% if page_slice_first_page > 1 %}
+                                    {% assign previous_slice_last_page = page_slice_first_page | minus:1 %}
+                                    <li>
+                                    <a href="{{ request.url | add_query:'page', previous_slice_last_page | path_and_query }}">
+                                        &hellip;
+                                    </a>
+                                    </li>
+                                {% endif %}
+                        
+                                {% for page in entityview.pages offset:page_offset limit:10 -%}
+                                    <li{% if page == entityview.page %} class="active"{% endif %}>
+                                    <a {% if page == entityview.page %} style="background-color: rgb(0, 51, 0);"{% endif %} href="{{ request.url | add_query:'page', page | path_and_query }}">
+                                        {{ page }}
+                                    </a>
+                                    </li>
+                                {% endfor -%}
+                        
+                                {% if page_slice_last_page < entityview.pages.size %}
+                                    {% assign next_slice_first_page = page_slice_last_page | plus:1 %}
+                                    <li>
+                                    <a href="{{ request.url | add_query:'page', next_slice_first_page | path_and_query }}">
+                                        &hellip;
+                                    </a>
+                                    </li>
+                                {% endif %}
+                        
+                                <li {% unless entityview.next_page %}class="disabled"{% endunless %}>
+                                    <a
+                                    {% if entityview.next_page %}
+                                        href="{{ request.url | add_query:'page', entityview.next_page | path_and_query }}"
+                                    {% endif %}>
+                                    &rsaquo;
+                                    </a>
+                                </li>
+                        
+                                <li {% unless last_page and entityview.page < last_page %}class="disabled"{% endunless %}>
+                                    <a
+                                    {% if last_page and entityview.page < last_page %}
+                                        href="{{ request.url | add_query:'page', last_page | path_and_query }}"
+                                    {% endif %}>
+                                    &raquo;
+                                    </a>
+                                </li>
+                                </ul>
+                        
+                            {% endif %}
+                            
+                            {% endentityview %}
+                            </div>
+
+                    </div>
+                    
+                    {% endentitylist %}                
+            </div>
+
+
+        </div>
+
+
+    </div><!-- /.container -->
+</div><!-- /.upcoming-events -->
+
+

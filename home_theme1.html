@@ -1,0 +1,285 @@
+<style>
+
+
+blockquote {
+    padding: 6px 16px;
+    border: none;
+    quotes: "\201C" "\201D";
+    font-size: 2em;
+    display: inline-block;
+    color:#69813a;
+    position: relative;
+}
+
+blockquote:before { 
+    content: open-quote;
+    font-weight: bold;
+    color:#69813a;    
+    position:absolute;
+    top:0;
+    left: 0;
+} 
+/* blockquote:after { 
+    content: close-quote;
+    font-weight: bold;
+    color:#69813a;
+    position:absolute;
+    bottom:0; right: 0;
+}  */
+
+
+
+</style>
+
+
+        <div class="gb-menu">									
+            </div><!-- /.gb-menu -->
+            
+            <div class="gb-banner">
+                <div class="banner-info text-center">
+                    <div class="container">
+                        <h1 style="font-weight:normal;"> {% editable snippets 'Home Page Banner Title' type: 'text' default: 'JHSC CERTIFICATION' %}</h1>
+                        <h2>{% editable snippets 'Home Page Banner Sub-Title' type: 'text' default: 'Part 1 and 2 certification training for JHSC members' %}</h2>
+                        {% editable snippets 'Home Page Banner Link' type: 'html' default: '<a href="#" class="btn button-white">TELL ME MORE</a>' %}
+                       
+                        <!-- countdown --> 					
+                    </div><!-- /.container -->
+                </div><!-- /.banner-info -->
+            </div><!-- /.gb-banner -->
+        
+            <div class="container indTrain" style="margin-top:20px; color:#69813a;">
+                <div class="col-sm-3" style="text-align:center;">
+                    <h4>TRAINING</h4>
+                    <a href="/courses"><img src="ind1.jpg" class="img-responsive" /></a>
+                </div>
+                <div class="col-sm-3" style="text-align:center;">
+                    <h4>EVENTS</h4>
+                    <a href="/events"><img src="ind2.jpg" class="img-responsive" /></a>
+                </div>
+                <div class="col-sm-3" style="text-align:center;">
+                    <h4>SERVICES</h4>
+                    <a href="#"><img src="ind3.jpg" class="img-responsive" /></a>
+                </div>
+                <div class="col-sm-3" style="text-align:center;">
+                    <h4>RESOURCES</h4>
+                    <a href="#"><img src="ind4.jpg" class="img-responsive" /></a>
+                </div>
+            </div>
+            {% assign cacheString = request.params['c'] %}   
+
+        
+
+                   
+            {% fetchxml my_query_training %}
+        
+            <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+                    <entity name="ept_eventschedule">
+                      <attribute name="ept_eventscheduleid" />
+                      <attribute name="lms_starttime" />
+                      <order attribute="lms_starttime" descending="false" />
+                      <filter type="and">
+                        <condition attribute="lms_starttime" operator="this-week" />
+                        <condition attribute="ept_event" operator="not-null" />
+                      </filter>
+                      <filter type="and">
+                            <condition attribute="ept_location" operator="not-null" />
+                      </filter>
+                      <link-entity name="ept_eventlocation" from="ept_eventlocationid" to="ept_location" visible="true" link-type="outer" alias="locationLink">
+                            <attribute name="wsn_name" />
+                            <attribute name="ept_eventlocation" />
+                      </link-entity>
+                      <link-entity name="ept_event" from="ept_eventid" to="ept_event" link-type="inner" alias="eventlink">
+                        <attribute name="ept_name" />
+                        <attribute name="lms_description" />
+                        <filter type="and">
+                          <condition attribute="ept_eventtype" operator="eq" uiname="Course - Open" uitype="ept_eventtype" value="{1B049253-BDDB-E811-A973-000D3AF49211}" />
+                        </filter>
+                        <filter type='and'>
+                                <condition attribute='ept_name' operator='ne' value="{{cacheString}}" />                        
+                            </filter>
+                      </link-entity>
+                     
+                    </entity>
+            </fetch>
+
+            {% endfetchxml %}
+
+            {% fetchxml my_query_event %}
+        
+            <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+                    <entity name="ept_eventschedule">
+                      <attribute name="ept_eventscheduleid" />
+                      <attribute name="lms_starttime" />
+                      <order attribute="lms_starttime" descending="false" />
+                      <filter type="and">
+                        <condition attribute="lms_starttime" operator="this-month" />
+                        <condition attribute="ept_event" operator="not-null" />
+                      </filter>
+                      <filter type="and">
+                            <condition attribute="ept_location" operator="not-null" />
+                      </filter>
+                      <link-entity name="ept_eventlocation" from="ept_eventlocationid" to="ept_location" visible="true" link-type="outer" alias="locationLink">
+                            <attribute name="wsn_name" />
+                            <attribute name="ept_eventlocation" />
+                      </link-entity>
+                      <link-entity name="ept_event" from="ept_eventid" to="ept_event" link-type="inner" alias="eventlink">
+                        <attribute name="ept_name" />
+                        <attribute name="lms_description" />
+                        <filter type="and">
+                          <condition attribute="ept_eventtype" operator="ne" uiname="Course - Open" uitype="ept_eventtype" value="{1B049253-BDDB-E811-A973-000D3AF49211}" />
+                        </filter>
+                        <filter type='and'>
+                                <condition attribute='ept_name' operator='ne' value="{{cacheString}}" />                        
+                            </filter>
+                      </link-entity>
+                      
+                    </entity>
+            </fetch>
+
+            {% endfetchxml %}
+            
+            <div class="upcoming-events gb-section text-center">
+                <div class="container">
+                    <div class="title-section" style="border-bottom:2px #e7e7e7 solid;">
+                        <h1 class="color-red">
+                            <span class="before-top"></span>
+                            <span>Upcoming Training</span>
+                            <span class="before-bottom"></span>
+                        </h1>
+                    </div>
+                    {% for result in my_query_training.results.entities %}
+                        <div class="row text-left eventC" style="margin-top:20px;">
+                            <div class="col-sm-2 text-uppercase">
+                                <h2 class="test">{{result.lms_starttime}}</h2>
+                            </div>
+                            <div class="col-sm-3">                              
+                                <h4>{{ result['eventlink.ept_name'] }}</h4>
+                            </div>
+                            <div class="col-sm-5">
+                                {{ result['eventlink.lms_description'] }}
+                            </div>
+                            
+                            <div class="col-sm-2">
+                                <a href="#" class="btn button-white" style="position:relative;">More Info</a>
+                            </div>
+            
+            
+                        </div><!-- event row -->
+                    {% endfor %}
+                    <!-- <div class="row text-left eventC">
+                        <div class="col-sm-2 text-uppercase">
+                            <h2>sep12</h2>
+                        </div>
+                        <div class="col-sm-3">
+                            <h4>Insert Your Training Title Here</h4>
+                        </div>
+                        <div class="col-sm-5">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque mattis tincidunt nisl. Pellentesque consectetur ipsum metus, id malesuada metus tempor quis. Sed maximus odio nisi, id vulputate dui rutrum in. Maecenas tincidunt, sem ut iaculis consequat, odio elit rhoncus mauris, in fringilla quam dolor vel enim. Donec at neque auctor, scelerisque ligula vitae, semper tellus.
+                        </div>
+                        <div class="col-sm-2">
+                            <a href="#" class="btn button-white" style="position:relative;">Register</a>
+                        </div>
+        
+        
+                    </div>event row -->
+                    
+                    <div class="row text-left eventC">
+                            <div class="col-sm-1 text-uppercase">
+                                
+                            </div>
+                            <div class="col-sm-9">
+                                    <a href="#" class="btn button-white" style="position:relative;">View full training schedules</a>
+                            </div>
+                            
+                            <div class="col-sm-2">
+                                
+                            </div>
+                        </div><!-- event row -->
+    
+                </div><!-- /.container -->
+            </div><!-- /.upcoming-training -->
+
+
+            <div class="upcoming-events gb-section text-center">
+                    <div class="container">
+                        <div class="title-section" style="border-bottom:2px #e7e7e7 solid;">
+                            <h1 class="color-red">
+                                <span class="before-top"></span>
+                                <span>Upcoming Events</span>
+                                <span class="before-bottom"></span>
+                            </h1>
+                        </div>
+                        {% for result1 in my_query_event.results.entities %}
+                        <div class="row text-left eventC" style="margin-top:20px;">
+                            <div class="col-sm-2 text-uppercase">
+                                <h2 class="test">{{result1.lms_starttime}}</h2>
+                            </div>
+                            <div class="col-sm-3">                              
+                                <h4>{{ result1['eventlink.ept_name'] }}</h4>
+                            </div>
+                            <div class="col-sm-5">
+                                    {{ result1['eventlink.lms_description'] }}
+                            </div>
+                           
+                            <div class="col-sm-2">
+                                <a href="#" class="btn button-white" style="position:relative;">More Info</a>
+                            </div>
+            
+            
+                        </div><!-- event row -->
+                    {% endfor %}
+                    
+            
+                    <div class="row text-left eventC">
+                            <div class="col-sm-1 text-uppercase">
+                                
+                            </div>
+                            <div class="col-sm-9">
+                                    <a href="#" class="btn button-white" style="position:relative;">Veiw full event schedules</a>
+                            </div>
+                            
+                            <div class="col-sm-2">
+                                
+                            </div>
+                        </div>
+            
+                    </div><!-- /.container -->
+
+                    <div class="row text-left eventC" style="margin-top:50px">
+                            <div class="col-sm-1 text-uppercase">
+                                
+                            </div>
+                            
+                            <div class="col-sm-10 text-center">
+                                    {% editable snippets 'Home Page Quote' type: 'html' %}
+                                   
+                            </div>
+                            
+                           
+                            
+                            <div class="col-sm-2">
+                                
+                            </div>
+                        </div>
+                </div><!-- /.upcoming-events -->
+
+
+<script>
+
+  $(document).ready(function(){
+
+    moment.locale('en-ca', {
+        week: {
+            dow: 1 // Monday is the first day of the week.
+        }
+    });
+    $( ".test" ).each(function( index, element ) {
+        console.log($(element).text());
+        $(element).text( moment($(element).text()).format("ll"));
+    });
+
+  });
+   
+
+
+</script>

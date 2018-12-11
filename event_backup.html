@@ -1,0 +1,120 @@
+
+<div class="upcoming-events gb-section text-center" style="padding:20px">
+    <div class="container">
+
+        <div class="row text-left eventC" style="margin-top:20px;">
+            <h2>Events</h2>
+
+          
+            {% assign cacheString = request.params['c'] %}           
+            {% fetchxml my_query %}
+            <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+                <entity name="ept_event">
+                    <attribute name="ept_eventid" />
+                    <attribute name="ept_name" />
+                    <attribute name="createdon" />
+                    <attribute name="ept_eventtype" />
+                    <attribute name="lms_description" />
+                    <order attribute="ept_name" descending="false" />
+                    <filter type='and'>
+                        <condition attribute='ept_name' operator='ne' value="{{cacheString}}" />                        
+                    </filter>
+                </entity>
+            </fetch>
+            {% endfetchxml %}
+
+            <div style="margin-bottom:20px;">
+                    {{cacheString}}
+                Lorem ipsum dolor asit amet, consectetur adipiscing elit. Quisque mattis tincidunt nisl. Pellentesque consectetur ipsum metus,
+                id malesuada metus tempor quis.Sed maximus odio nisi, id vulputate dui rutrum in. Maecenas tincidunt, sem
+                ut iaculis consequat, odio elit rhoncus mauris, in fringilla quam dolor vel enim.
+            </div>
+            <div class="row" style="border-bottom:1px #8aa14f solid;padding:20px">
+                <div class="col-sm-2 text-center" style="background-color:#8aa14f; padding:10px 20px;">
+                    <a href="#">Upcoming</a>
+                </div>
+                <div class="col-sm-2 text-center" style="padding:10px 20px;">
+                    <a href="#">Past</a>
+                </div>
+            </div>
+            <!-- event row -->
+            <div class="row">
+                 {% for result in my_query.results.entities %}
+                <div class="col-lg-12" style="margin-bottom:20px;">
+                    <h4><a href="/events/event-details/?id={{result.ept_eventid}}">{{ result.ept_name }}</a></h4>
+                    <h6 style="color:#6b7e3c;"><a href="/events/event-details/?id={{result.ept_eventid}}">{{ result.createdon }}</a></h6>
+                    
+                            {% fetchxml locations %}
+                            <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+                                    <entity name="ept_eventlocation">
+                                            <attribute name="ept_event" />    
+                                        <attribute name="ept_eventlocation" />
+                                      <attribute name="ept_eventlocationid" />
+                                      <attribute name="ept_street1" />
+                                      <order descending="false" attribute="ept_eventlocation" />
+                                      <filter type="and">
+                                        <condition attribute="ept_event" operator="eq" uiname="{{result.ept_name}}" uitype="ept_event" value="{{result.ept_eventid}}" />
+                                        
+                                      </filter>
+
+                                    </entity>
+                                  </fetch>                                  
+                            {% endfetchxml %}
+
+                            {% for result1 in locations.results.entities %}
+                                    <blockquote>{{result1.ept_eventlocation}} <br> {{result1.ept_street1}}</blockquote>
+                            {% endfor %}
+                    
+                    <div>
+                        {{ result.lms_description}}
+                    </div>
+                </div>
+                {% endfor %}
+
+                <div class="row" style="border-bottom:1px #8aa14f solid; margin-bottom:20px; padding:20px">
+                    <div class="col-sm-2 text-center" style="background-color:#8aa14f; padding:10px 20px;">
+                        <a href="#">All Events</a>
+                    </div>
+                </div>
+                <!-- event row -->
+
+                <div class="row" id="eventList" style="padding:20px">
+                    <div class="col-lg-12" style="background-color:#2c3c02; color:#FFFFFF; padding:10px;">
+                        <div class="col-sm-6">
+                            Event Name
+                        </div>
+                        <div class="col-sm-2">
+                            Start Date
+                        </div>
+                        <div class="col-sm-2">
+                            End Date
+                        </div>
+                        <div class="col-sm-2">
+                            Venue
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12" style="padding:10px;">
+                        <div class="col-sm-6">
+                            Introduction to course name
+                        </div>
+                        <div class="col-sm-2">
+                            09/12/2018 9:00 AM
+                        </div>
+                        <div class="col-sm-2">
+                            09/12/2018 4:00 PM
+                        </div>
+                        <div class="col-sm-2">
+                            Training Center, 112 Laurier
+                        </div>
+                    </div>
+
+                </div>
+                <!-- event row -->
+
+            </div>
+            <!-- row -->
+        </div>
+        <!-- /.container -->
+    </div>
+    <!-- /.upcoming-events  -->

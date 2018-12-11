@@ -1,0 +1,95 @@
+
+<style>
+
+        body {
+          /* Margin bottom by footer height */
+          margin-bottom: 600px;
+        }
+        .footer {
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                height: 600px;
+                background-color: #404040;
+                padding:35px 0;
+                
+            }
+       
+        
+        </style>
+        
+        
+                <div class="footer white-color text-center" style="text-transform:inherit;">
+                        <div class="container">
+                               
+                            <div>
+                                
+                                
+                                {% editable snippets 'Footer Contact' type: 'html' %}
+                                {% assign footer_nav = weblinks["Footer Navigation"] %}
+
+                                <div class="col-sm-4 {% if footer_nav.editable %}xrm-entity xrm-editable-adx_weblinkset{% endif %}" align="left">
+                                    <ul class="list-unstyled weblinks">
+
+
+                                            {% if footer_nav %}
+                                                {% for link in footer_nav.weblinks %}
+        
+                                                {% if link.url %}
+                                                    <li><a href="{{ link.url }}">{{ link.name | escape }}</a></li>                                            
+                                                {% endif %}
+        
+                                                    <!-- <li><a href="#">About Us</a></li>
+                                                    <li><a href="#">Accessibility</a></li>
+                                                    <li><a href="#">Careers</a></li>
+                                                    <li><a href="#">Services en fran&ccedil;ais</a></li><br /> -->
+                                                {% endfor %}
+        
+                                                <li class="divider"></li>
+                                            {% endif %}
+
+                                        <li><a href="#">Training</a></li>
+                                        <li><a href="#">Events</a></li>
+                                        <li><a href="#">Services</a></li>
+                                        <li><a href="#">Products</a></li>
+                                        <li><a href="#">Resources</a></li>
+                                        <li><a href="#">News</a></li>
+                                        <li><a href="#">Ontario Mine Rescue</a></li>
+                                        <li><a href="#">Small Business</a></li>
+                                        <li><a href="#">Safety Groups</a></li>
+                                    </ul>
+                                </div>
+                
+                                <div class="col-sm-4" align="left" >
+                                    NEWSLETTER<br />
+                                    <div style="padding:5px 0 5px 0">Stay up to date with the latest health and safety news training</div><br />
+                                    <a href="#" class="btn button-white">SUBSCRIBE</a><br /><br />
+                                    STAY CONNECTED<br />
+                                    <a href="#"><img src="https://wsn-preprod.microsoftcrmportals.com/en-US/social.png" class="img-responsive" /></a><br /><br />
+                                    <img src="https://wsn-preprod.microsoftcrmportals.com/en-US/tweet.jpg" class="img-responsive" />
+                                </div>
+                            </div><!-- foot cont end-->
+                        </div>
+                 </div><!-- /.gb-footer   -->
+                        
+                
+                
+                
+                
+                
+                
+                
+                <script type="text/javascript">
+                    (function ($) {
+                      $(document).ready(function () {
+                          $(".dropdown-submenu").on("keydown", function (event) {
+                             if (event.keyCode == 9) {
+                                  $(this).toggleClass("open");
+                             }
+                         });
+                      });
+                     }(jQuery));
+                </script>
+                
+                       
