@@ -1,0 +1,43 @@
+{% extends 'layout 2 column with view' %}
+{% block sidebar %}
+
+{% assign primary_nav = weblinks["Primary Navigation"] %}
+
+{% if primary_nav %}
+
+<ul class="list-unstyled"></ul>
+{% for link in primary_nav.weblinks %}
+<li><a href="{{ link.url }}"></a>{{ link.name | escape }}</li>
+{% endfor %}
+</ul>
+
+{% endif %}
+
+
+
+<ul class="list-unstyled">
+        <li><a href="/courses">ALL COURSES</a></li>
+        <li><a href="/courses/schedule">TRAINING SCHEDULE</a></li>
+        <li><a href="/courses/online">ONLINE TRAINING</a></li>
+        <li><a href="#">JHSC CERTIFICATION</a></li>
+        <li><a href="#">WORKING AT HEIGHTS</a></li>
+        <li><a href="#">MANDATORY SKILLS TRAINING</a></li>
+        <li><a href="#">TRAINING PARTNERS</a></li>
+        <li><a href="#">APPROVED TRAINERS (FORESTRY)</a></li>
+        <li><a href="#">MANDATORY AWARENESS TRAINING</a></li>
+        <li><a href="#">REQUEST TRAINING RECORDS</a></li>
+    </ul>
+{% endblock %}
+
+            
+{% block gridheader %}
+        <h2>Training (All Courses)</h2>
+        <div>Workplace Safety North’s complete course catalogue is stored in the database below. 
+            View training schedule. If you discover a course does not have any sessions listed, please contact c
+            ustomer care to open a session or initiate a waiting list for your chosen course. If interested in offering courses, 
+            please visit Training Partners webpage.</div>
+{% endblock %}
+
+
+
+
