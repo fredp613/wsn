@@ -1,17 +1,20 @@
-{% extends 'layout 2 column theme' %}
+{% extends 'layout 2 column with view' %}
 {% block sidebar %}
+
+{% assign training_nav = weblinks["Training Navigation"] %}
+
+{% if training_nav %}
+
 <ul class="list-unstyled">
-        <li><a href="/courses">ALL COURSES</a></li>
-        <li><a href="/courses/schedule">TRAINING SCHEDULE</a></li>
-        <li><a href="#">ONLINE TRAINING</a></li>
-        <li><a href="#">JHSC CERTIFICATION</a></li>
-        <li><a href="#">WORKING AT HEIGHTS</a></li>
-        <li><a href="#">MANDATORY SKILLS TRAINING</a></li>
-        <li><a href="#">TRAINING PARTNERS</a></li>
-        <li><a href="#">APPROVED TRAINERS (FORESTRY)</a></li>
-        <li><a href="#">MANDATORY AWARENESS TRAINING</a></li>
-        <li><a href="#">REQUEST TRAINING RECORDS</a></li>
-    </ul>
+{% for link in training_nav.weblinks %}
+<li><a href="{{ link.url }}">{{ link.name | escape | upcase }}</a></li>
+{% endfor %}
+</ul>
+
+
+
+{% endif %}
+
 {% endblock %}
 
             
