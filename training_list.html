@@ -11,19 +11,13 @@
 {% endfor %}
 </ul>
 
-
-
 {% endif %}
 
 {% endblock %}
 
             
 {% block gridheader %}
-        <h2>Training (All Courses)</h2>
-        <div>Workplace Safety North’s complete course catalogue is stored in the database below. 
-            View training schedule. If you discover a course does not have any sessions listed, please contact c
-            ustomer care to open a session or initiate a waiting list for your chosen course. If interested in offering courses, 
-            please visit Training Partners webpage.</div>
+        {% editable snippets 'Training Title & Subtitle' type: 'html' %}
 {% endblock %}
 
 
