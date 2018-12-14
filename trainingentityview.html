@@ -1,65 +1,7 @@
-<style>
-.margin {
-margin-top: 50px;
-}
-.btn {
-    position:relative;
-}
-</style>
 
-<div class="upcoming-events text-center margin">
-       
-    <div class="container">
-        <div class="row text-left eventC">
-            <div class="col-lg-3">
-                {% block sidebar %}
-                    {% include 'Side Bar' %}
-                {% endblock %}
-                
-            </div>
-
-            
-
-            <div class="col-lg-9" style="padding-bottom:35px;">
-                {% block gridheader %}
-                    {% include 'Grid Header' %}
-                {% endblock %}
-            </div>
-
-            <div class="col-lg-9">
-<<<<<<< HEAD
-=======
-                    {% entitylist id:page.adx_entitylist.id %}                    
+                    {% entitylist id:page.adx_entitylist.id %}
+                    
                     <div class="container-fluid">
-                            {% if entitylist.search_enabled %}
-                            <div class="row">   
-
-                                <form class="form-vertical" method="get">
-                                    <div class="">
-                                    {% if params.search.size > 0 %}
-                                        <div class="">
-                                        <a class="btn btn-default"
-                                            href="{{ request.path_and_query | remove_query:'search' }}">&times;</a>
-                                        </div>
-                                    {% endif %}
-                                    <div>
-                                            <input name="search" class="form-control"
-                                            value="{{ params.search }}"
-                                            placeholder="{{ entitylist.search_placeholder | default: 'Search' }}"
-                                            type="text" />  
-
-                                    </div>      <br>                             
-                                    
-                                        
-                                        <div class="btn-group" role="group" aria-label="Basic example">
-                                            <button type="submit" class="btn button-white" 
-                                            title="{{ entitylist.search_tooltip }}"><i class="fa fa-search">&nbsp;</i></button>
-                                            </div>
-                                
-                                    </div>
-                                </form>                                
-                            </div>
-                            {% endif %}
                             <div class="row">
                             {% entityview id:params.view, search:params.search, order:params.order, page:params.page, pagesize:params.pagesize, metafilter:params.mf %}
                             {% assign order = params.order | default: entityview.sort_expression %}
@@ -208,17 +150,7 @@ margin-top: 50px;
                             
                             {% endentityview %}
                             </div>
->>>>>>> cf174ba6adf97b4f2f8e9ac522a371f38c77d07a
 
-                asdfdfsdfsdfasafdsfdsf
-                {% include 'Training Entity View' %}
-            </div>
-
-
-        </div>
-
-
-    </div><!-- /.container -->
-</div><!-- /.upcoming-events -->
-
-
+                    </div>
+                    
+                    {% endentitylist %}                
